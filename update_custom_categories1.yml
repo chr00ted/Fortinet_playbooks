@@ -1,0 +1,23 @@
+---
+- hosts: all
+  connection: httpapi
+  gather_facts: no
+  vars:
+     vdom: "root"
+     ansible_httpapi_use_ssl: yes
+     ansible_httpapi_validate_certs: no
+     ansible_httpapi_port: 443
+     ansible_network_os: fortinet.fortios.fortios
+  tasks:
+  - name: Updating Custom Categories
+    fortinet.fortios.fortios_webfilter_ftgd_local_rating:
+      vdom: "{{ vdom }}"
+      state: "present"
+      webfilter_ftgd_local_rating:
+        rating: "140"
+        status: "enable"
+        url: "{{ item }}"
+    loop: 
+      - "cnn.com"
+      - "foxnews.com"
+      

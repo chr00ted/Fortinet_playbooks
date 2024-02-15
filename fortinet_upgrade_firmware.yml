@@ -1,0 +1,22 @@
+---
+- hosts: all
+  connection: httpapi
+  gather_facts: no
+  vars:
+     vdom: "root"
+     ansible_httpapi_use_ssl: yes
+     ansible_httpapi_validate_certs: no
+     ansible_httpapi_port: 443
+     ansible_network_os: fortinet.fortios.fortios
+  tasks:   
+  - name: Upgrade Firmware 
+    fortinet.fortios.fortios_monitor:
+      vdom: "{{ vdom }}"
+      selector: 'upgrade.system.firmware'
+      params:
+         source: fortiguard
+         filename: 07002000FIMG0023802007   ####To get the ID run the following on any fortigate: diag fdsm image-upgrade-matrix #####
+
+    
+
+

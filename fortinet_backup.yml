@@ -1,0 +1,30 @@
+---
+- hosts: all
+  connection: httpapi
+  gather_facts: no
+  vars:
+     vdom: "root"
+     ansible_httpapi_use_ssl: yes
+     ansible_httpapi_validate_certs: no
+     ansible_httpapi_port: 443
+     ansible_network_os: fortinet.fortios.fortios
+  tasks:
+  - name: Gathering System Name and firmware build
+    fortinet.fortios.fortios_monitor_fact:
+      selector: 'system_status'
+      vdom: "{{ vdom }}"
+    register: result
+
+  - name: Gather Backups
+    fortinet.fortios.fortios_monitor:
+      selector: 'backup.system.config'
+      vdom: "{{ vdom }}"
+      params:
+         scope: 'global'
+    register: backupinfo
+  
+  - name: Saving the backup information locally
+    copy:
+     content: '{{ backupinfo.meta.raw }}'
+     dest: "/scratch/{{ result.meta.results.hostname }}-{{ result.meta.build }}_{{ inventory_hostname }}.conf"
+
