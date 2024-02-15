@@ -1,0 +1,37 @@
+---
+- hosts: all
+  connection: httpapi
+  gather_facts: no
+  vars:
+     vdom: "root"
+     ansible_httpapi_use_ssl: yes
+     ansible_httpapi_validate_certs: no
+     ansible_httpapi_port: 444
+     ansible_network_os: fortinet.fortios.fortios
+  tasks:   
+  - name: SNMP community configuration 
+    fortinet.fortios.fortios_system_snmp_community:
+      vdom: "{{ vdom }}"
+      state: "present"
+      system_snmp_community:
+          hosts:
+              -
+                  host_type: "query"
+                  id: "7"
+                  ip: "{{ ip_querying_from }}"
+          id: "16"
+          name: "{{ SNMP_NAME }}"
+          query_v1_port: "161"
+          query_v1_status: "disable"
+          query_v2c_port: "161"
+          query_v2c_status: "enable"
+          status: "enable"
+          trap_v1_lport: "162"
+          trap_v1_rport: "162"
+          trap_v1_status: "disable"
+          trap_v2c_lport: "162"
+          trap_v2c_rport: "162"
+          trap_v2c_status: "disable"
+
+
+
