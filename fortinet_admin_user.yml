@@ -1,0 +1,39 @@
+---
+- hosts: all
+  connection: httpapi
+  gather_facts: no
+  vars:
+     vdom: "root"
+     ansible_httpapi_use_ssl: yes
+     ansible_httpapi_validate_certs: no
+     ansible_httpapi_port: 444
+     ansible_network_os: fortinet.fortios.fortios
+  tasks:   
+  - name: Add Admin user 
+    fortinet.fortios.fortios_system_admin:
+      vdom: "{{ vdom }}"
+      state: "present"
+      system_admin: 
+         accprofile: "super_admin"
+         accprofile_override: "enable"
+         allow_remove_admin_session: "enable"
+         comments: "{{ comment }}"
+         email_to: "{{ email }}"
+         name: "{{ username }}"
+         password: "{{ pw }}"
+         trusthost1: "{{ thost1 }}"
+         trusthost10: "{{ thost10 }}"
+         trusthost2: "{{ thost2 }}"
+         trusthost3: "{{ thost3 }}"
+         trusthost4: "{{ thost4 }}"
+         trusthost5: "{{ thost5 }}"
+         trusthost6: "{{ thost6 }}"
+         trusthost7: "{{ thost7 }}"
+         trusthost8: "{{ thost8 }}"
+         trusthost9: "{{ thost9 }}"
+         two_factor: "disable"
+
+
+    
+
+
