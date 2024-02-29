@@ -1,0 +1,21 @@
+---
+- hosts: all
+  connection: httpapi
+  gather_facts: no
+  vars:
+     vdom: "root"
+     ansible_httpapi_use_ssl: yes
+     ansible_httpapi_validate_certs: no
+     ansible_httpapi_port: 443
+     ansible_network_os: fortinet.fortios.fortios
+  tasks:
+  - name: Gather FortiAPs firmware list
+    fortinet.fortios.fortios_monitor_fact:
+      enable_log: true
+      selector: 'wifi_managed_ap'
+      vdom: "{{ vdom }}"
+    register: result
+  
+  - debug:
+      msg: "{{ result.meta.results | json_query('[].{name: name, wtp_id: wtp_id, os_version: os_version, status: status, last_reboot_time: last_reboot_time}') }}"
+
